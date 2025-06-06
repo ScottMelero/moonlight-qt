@@ -43,4 +43,9 @@ private:
     bool m_FirstPoll;
     bool m_HasFocus;
     Uint32 m_LastAxisNavigationEventTime;
+    bool m_StartPressed = false;
+    bool m_SelectPressed = false;
+
+signals:
+    void showControllerMenuRequested();  // <-- Add this
 };

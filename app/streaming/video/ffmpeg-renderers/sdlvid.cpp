@@ -337,7 +337,8 @@ ReadbackRetry:
             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION,
                         "Performing color conversion on CPU due to lack of SDL support for format: %s",
                         av_get_pix_fmt_name((AVPixelFormat)frame->format));
-            sdlFormat = SDL_PIXELFORMAT_XRGB8888;
+            //sdlFormat = SDL_PIXELFORMAT_XRGB8888;
+            sdlFormat = SDL_PIXELFORMAT_ARGB8888;
             m_NeedsYuvToRgbConversion = true;
             break;
         }

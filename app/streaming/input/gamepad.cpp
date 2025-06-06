@@ -395,6 +395,19 @@ void SdlInputHandler::handleControllerButtonEvent(SDL_ControllerButtonEvent* eve
         return;
     }
 
+    if(state->buttons == PLAY_FLAG | BACK_FLAG) {
+        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION,
+            "Detected toggle controller menu combo");
+
+        emit showControllerMenuRequested();
+
+        // Clear button state so it doesn't repeat
+        LiSendMultiControllerEvent(state->index, m_GamepadMask,
+                                0, 0, 0, 0, 0, 0, 0);
+        return;
+
+    }
+
     // Only send the gamepad state to the host if it's not in mouse emulation mode
     if (state->mouseEmulationTimer == 0) {
         sendGamepadState(state);

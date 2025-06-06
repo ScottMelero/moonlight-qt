@@ -221,6 +221,7 @@ signals:
     void captureSysKeysModeChanged();
     void keepAwakeChanged();
     void languageChanged();
+    void showControllerMenuRequested();
 
 private:
     explicit StreamingPreferences(QQmlEngine *qmlEngine);

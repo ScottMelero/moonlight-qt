@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include <QGuiApplication>
 #include <QWindow>
+#include <QDebug>
 
 #include "settings/mappingmanager.h"
 
@@ -110,6 +111,7 @@ void SdlGamepadKeyNavigation::onPollingTimerFired()
     }
 
     while (SDL_PollEvent(&event)) {
+        qDebug() << "SDL Event Type:" << event.type;
         switch (event.type) {
         case SDL_QUIT:
             // SDL may send us a quit event since we initialize
@@ -123,6 +125,25 @@ void SdlGamepadKeyNavigation::onPollingTimerFired()
             QEvent::Type type =
                     event.type == SDL_CONTROLLERBUTTONDOWN ?
                         QEvent::Type::KeyPress : QEvent::Type::KeyRelease;
+
+            const bool isPressed = (event.type == SDL_CONTROLLERBUTTONDOWN);
+
+            switch (event.cbutton.button) {
+            case SDL_CONTROLLER_BUTTON_START:
+                m_StartPressed = isPressed;
+                break;
+            case SDL_CONTROLLER_BUTTON_BACK: // "Select" button is BACK in SDL
+                m_SelectPressed = isPressed;
+                break;
+            }
+        
+            // Check combo: both pressed
+            if (m_StartPressed && m_SelectPressed) {
+                qDebug() << "Start + Select pressed!";
+        
+                // TODO: Trigger your popup menu here (C++ signal, QML slot, etc.)
+                emit showControllerMenuRequested();  // you define this signal
+            }
 
             // Swap face buttons if needed
             if (m_Prefs->swapFaceButtons) {
